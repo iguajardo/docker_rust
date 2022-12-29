@@ -13,10 +13,10 @@ fn main() {
         .unwrap();
 
     if output.status.success() {
-        let std_out = std::str::from_utf8(&output.stdout).unwrap();
+        let std_out = String::from_utf8_lossy(&output.stdout);
         println!("{}", std_out);
     } else {
-        let std_err = std::str::from_utf8(&output.stderr).unwrap();
+        let std_err = String::from_utf8_lossy(&output.stderr);
         println!("{}", std_err);
         std::process::exit(1);
     }
