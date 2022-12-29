@@ -13,6 +13,10 @@ fn main() {
         .unwrap();
 
     if output.status.success() {
+        // let std_out = std::str::from_utf8(&output.std_out);
+        // print!({}, std_out);
+        // let std_err = std::str::from_utf8(&output.std_err);
+        // eprint!({}, std_err);
         std::process::exit(0);
     }
 }
