@@ -1,4 +1,4 @@
-use std::process::Stdio;
+use std::process::{Stdio, ExitStatus};
 
 // Usage: your_docker.sh run <image> <command> <arg1> <arg2> ...
 fn main() {
@@ -14,11 +14,11 @@ fn main() {
 
     let exit_status = output.status;
 
-    if output.status.success() {
-        // let std_out = std::str::from_utf8(&output.std_out);
-        // print!({}, std_out);
-        // let std_err = std::str::from_utf8(&output.std_err);
-        // eprint!({}, std_err);
-        std::process::exit(exit_status.code().unwrap());
+    match exit_status.code() {
+        Some(code) => {
+            std::process::exit(code);
+        },
+        None => {},
     }
+    
 }
