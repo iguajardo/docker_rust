@@ -12,13 +12,5 @@ fn main() {
         .output()
         .unwrap();
 
-    let exit_status = output.status;
-
-    match exit_status.code() {
-        Some(code) => {
-            std::process::exit(code);
-        },
-        None => {},
-    }
-    
+    std::process::exit(output.status.code().unwrap());
 }
