@@ -1,4 +1,4 @@
-use std::process::{Stdio, ExitStatus};
+use std::process::{Stdio};
 
 // Usage: your_docker.sh run <image> <command> <arg1> <arg2> ...
 fn main() {
