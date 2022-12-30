@@ -12,5 +12,7 @@ fn main() {
         .output()
         .unwrap();
 
+    // If command is "exit <code>", the output is an exit with the status of ExitStatus that represent
+    // the termination of the child. Can get the code with code()
     std::process::exit(output.status.code().unwrap());
 }
