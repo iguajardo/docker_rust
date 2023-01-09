@@ -37,6 +37,7 @@ fn isolate(command: &str) -> String {
 
     #[cfg(target_os = "linux")]
     unsafe {
+        // creates a new PID namespace and the process and every new child process will be executed in this new PID namespace.
         libc::unshare(libc::CLONE_NEWPID);
     }
 
