@@ -1,7 +1,6 @@
 use std::env::set_current_dir;
 use std::fs;
 use std::os::unix::fs::chroot;
-use std::os::unix::process::CommandExt;
 use std::path::{Path, PathBuf};
 
 const CHROOT_PATH: &str = "./.sandbox";
@@ -13,7 +12,6 @@ fn main() {
     let file_name = isolate(command);
 
     let output = std::process::Command::new(format!("/{}", file_name))
-        .gid(std::process::id())
         .args(command_args)
         .output()
         .unwrap();
@@ -36,6 +34,11 @@ fn isolate(command: &str) -> String {
 
     chroot(CHROOT_PATH).expect("not possible to use chroot");
     set_current_dir("/").expect("not possible to set the current dir");
+
+    #[cfg(target_os = "linux")]
+    unsafe {
+        libc::unshare(libc::CLONE_NEWPID);
+    }
 
     if !Path::new("/dev").exists() {
         fs::create_dir("/dev").expect("not possible to create dev dir");
