@@ -5,7 +5,6 @@ use std::os::unix::process::CommandExt;
 use std::path::{Path, PathBuf};
 
 const CHROOT_PATH: &str = "./.sandbox";
-// Usage: your_docker.sh run <image> <command> <arg1> <arg2> ...
 fn main() {
     let args: Vec<_> = std::env::args().collect();
     let command = &args[3];
@@ -22,8 +21,6 @@ fn main() {
     print!("{}", String::from_utf8_lossy(&output.stdout));
     eprint!("{}", String::from_utf8_lossy(&output.stderr));
 
-    // If command is "exit <code>", the output is an exit with the status of ExitStatus that represent
-    // the termination of the child. Can get the code with code()
     std::process::exit(output.status.code().unwrap());
 }
 
@@ -35,7 +32,6 @@ fn isolate(command: &str) -> String {
         fs::create_dir(CHROOT_PATH).expect("not possible to create chroot dir");
     }
 
-    // this use std::fs::canonicalize to obtain the absolute path of the command binary.
     std::fs::copy(command, format!("./.sandbox/{}", file_name)).expect("could not copy command");
 
     chroot(CHROOT_PATH).expect("not possible to use chroot");
