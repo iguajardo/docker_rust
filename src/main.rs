@@ -1,6 +1,7 @@
 use std::env::set_current_dir;
 use std::fs;
 use std::os::unix::fs::chroot;
+use std::os::unix::process::CommandExt;
 use std::path::{Path, PathBuf};
 
 const CHROOT_PATH: &str = "./.sandbox";
@@ -13,6 +14,7 @@ fn main() {
     let file_name = isolate(command);
 
     let output = std::process::Command::new(format!("/{}", file_name))
+        .gid(std::process::id())
         .args(command_args)
         .output()
         .unwrap();
